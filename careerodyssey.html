@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Personality Quiz</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div id="quiz">
+        <!-- Quiz questions will be generated dynamically here -->
+    </div>
+    <button onclick="submitQuiz()">Submit</button>
+    <div id="result"></div>
+
+    <script>
+        const questions = [
+            "When faced with a problem, how do you prefer to approach it?",
+            "What type of work environment do you thrive in?",
+            "How do you prefer to communicate with others?",
+            "How do you handle stress and pressure?",
+            "What motivates you the most in your work?",
+            "How do you prefer to learn new skills or concepts?",
+            "What are your long-term career goals?",
+            "How do you handle conflicts or disagreements with colleagues?",
+            "What do you consider to be your greatest strength?",
+            "How do you prefer to manage your time and prioritize tasks?"
+        ];
+
+        let answers = [];
+
+        function buildQuiz() {
+            const quizContainer = document.getElementById('quiz');
+
+            questions.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('question');
+                questionElement.innerHTML = `
+                    <p>${question}</p>
+                    <label>
+                        <input type="radio" name="question${index}" value="A"> A
+                    </label>
+                    <label>
+                        <input type="radio" name="question${index}" value="B"> B
+                    </label>
+                    <label>
+                        <input type="radio" name="question${index}" value="C"> C
+                    </label>
+                `;
+                quizContainer.appendChild(questionElement);
+            });
+        }
+
+        function submitQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            const inputs = quizContainer.querySelectorAll('input[type="radio"]:checked');
+            
+            answers = Array.from(inputs).map(input => input.value);
+
+            const score = calculateScore(answers);
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = interpretScore(score);
+        }
+
+        function calculateScore(answers) {
+            let score = 0;
+            answers.forEach(answer => {
+                if (answer === 'A') {
+                    score += 1;
+                } else if (answer === 'B') {
+                    score += 2;
+                } else if (answer === 'C') {
+                    score += 3;
+                }
+            });
+            return score;
+        }
+
+        function interpretScore(score) {
+            if (score >= 10 && score <= 16) {
+                return "You may thrive in careers that require analytical thinking and attention to detail, such as finance, engineering, or research.";
+            } else if (score >= 17 && score <= 23) {
+                return "You might excel in creative and innovative fields, such as design, marketing, or entrepreneurship.";
+            } else if (score >= 24 && score <= 30) {
+                return "You could be well-suited for roles that involve collaboration and interpersonal interaction, such as teaching, counseling, or social work.";
+            } else {
+                return "Unable to determine your career path based on the quiz responses.";
+            }
+        }
+
+        // Build the quiz when the page loads
+        window.onload = buildQuiz;
+    </script>
+</body>
+</html>
